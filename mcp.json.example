@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "azure-dev-ai": {
+      "command": "node",
+      "args": ["C:/Users/LEA5JVL/Documents/Projects/azure-dev-ai/server.js"],
+      "env": {
+        "GIT_REPO_PATH": "${workspaceFolder}"
+      }
+    }
+  }
+}

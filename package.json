@@ -1,0 +1,15 @@
+{
+  "name": "azure-dev-ai",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "axios": "^1.16.1",
+    "dotenv": "^17.4.2",
+    "playwright": "^1.60.0",
+    "simple-git": "^3.36.0"
+  }
+}
