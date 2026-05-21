@@ -63,6 +63,33 @@ function stripInnerHtml(html) {
 /**
  * Remove título duplicado no início da Descrição (o WI já tem campo Título).
  */
+/**
+ * Garante um único parágrafo HTML simples (<p>...</p>).
+ */
+function enforceSingleParagraphHtml(html) {
+  let result = html.trim();
+
+  result = result
+    .replace(/<h[1-6][^>]*>[\s\S]*?<\/h[1-6]>/gi, ' ')
+    .replace(/<ul[^>]*>[\s\S]*?<\/ul>/gi, ' ')
+    .replace(/<ol[^>]*>[\s\S]*?<\/ol>/gi, ' ')
+    .replace(/<pre[^>]*>[\s\S]*?<\/pre>/gi, ' ')
+    .replace(/<br\s*\/?>/gi, ' ');
+
+  const paragraphTexts = [...result.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)].map(
+    (match) => stripInnerHtml(match[1])
+  );
+
+  const plain =
+    paragraphTexts.filter(Boolean).join(' ') || stripInnerHtml(result);
+
+  if (!plain) {
+    return '<p></p>';
+  }
+
+  return `<p>${plain}</p>`;
+}
+
 function sanitizeDescriptionHtml(html, title) {
   if (!html?.trim() || !title?.trim()) {
     return html;
@@ -102,9 +129,14 @@ function parseWorkItemContent(llmText, workItemTitle) {
     descriptionHtml = sanitizeDescriptionHtml(descriptionHtml, workItemTitle);
   }
 
+  descriptionHtml = enforceSingleParagraphHtml(descriptionHtml);
+  const discussionHtml = enforceSingleParagraphHtml(
+    normalizeHtml(parsed.discussionHtml, 'discussionHtml')
+  );
+
   return {
     descriptionHtml,
-    discussionHtml: normalizeHtml(parsed.discussionHtml, 'discussionHtml')
+    discussionHtml
   };
 }
 
@@ -124,5 +156,6 @@ function htmlToPlainText(html) {
 module.exports = {
   parseWorkItemContent,
   sanitizeDescriptionHtml,
+  enforceSingleParagraphHtml,
   htmlToPlainText
 };
