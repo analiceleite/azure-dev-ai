@@ -66,7 +66,7 @@ Com `AZURE_PUBLISH_MODE=browser` (padrão):
 3. Faça login no `dev.azure.com` quando o navegador abrir
 4. A sessão fica salva no perfil persistente do Playwright
 
-## Proxy Bosch
+## Proxy
 
 Configure no `.env`:
 
